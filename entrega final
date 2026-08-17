@@ -1,9 +1,0 @@
-Pruebas realizadas: LightGBM con feature engineering incremental (lags, categorías, stock), tuning bayesiano y walk-forward (0.285→0.274→0.258→0.256→0.251); regresión lineal simple (0.231); AutoGluon (0.251); clustering por similitud de series (DTW: 0.282 a nivel producto, 0.850 a nivel cliente-producto) y por volumen (0.799 anual, 1.451 mensual); y un enfoque de escalado con Tweedie a nivel cliente-producto (0.799 corregido, 0.508 aislado a nivel producto).
-
-Mejores resultados:
-ENS04_PONDERADO: 0.233 (ensamble ponderado 50/25/25)
-ENS03_MEJORES3: 0.236 (ensamble simple, mismos 3 modelos)
-LGB07_WF: 0.251 (mejor modelo individual LightGBM + feature engineering + Optuna + walk-forward)
-LightGBM mejoró con más features, tuning, y validación por cortes temporales (0.285→0.251). Regresión lineal simple, entrenada con un período puntual y un subconjunto curado de productos, dio el mejor resultado de todos (0.231). AutoGluon empató con el mejor LightGBM (0.251).
-
-Empeoro la predicción agregar más datos de entrenamiento (más productos, más períodos) empeoró tanto en LightGBM (0.258→0.285 y 0.258→0.256 según la fuente agregada) como en regresión lineal (0.231→0.278 con todos los productos y períodos; 0.231→0.255 con dos años). Cambiar la granularidad de producto a cliente-producto empeoró siempre (0.251→0.366 en LightGBM directo, 0.799 en el enfoque de escalado). El clustering, en cualquier variante, fragmentó el entrenamiento sin ganancia neta (0.251→0.282 por producto, 0.251→0.850 por cliente-producto, walk-forward de 6 cortes 0.256 vs. 3 cortes 0.251). El escalado por promedio con Tweedie quedó muy por debajo de las demás líneas (0.799 mejor caso, hasta 9.557 con un bug luego corregido[]). Los ensambles de los mejores modelos no superaron al mejor modelo individual (0.231 solo vs. 0.233 ponderado vs. 0.236 promedio simple)
